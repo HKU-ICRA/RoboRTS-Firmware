@@ -264,8 +264,11 @@ static int32_t shoot_cmd_ctrl(struct shoot *shoot)
       shoot_state_update(shoot);
     }
   }
-
-  if ((shoot->fric_spd[0] >= FRIC_MIN_SPEED) && (shoot->fric_spd[1] >= FRIC_MIN_SPEED))
+  
+  /* Edited by Y.Z. Yang 
+  *   Mar 16: Implement the trigget motor control logic last year to prevent stuck of bullet when initializring friction wheel
+  **/
+  if ((shoot->fric_spd[0] >= (FRIC_MIN_SPEED+FIRC_MAX_SPEED)/2) && (shoot->fric_spd[1] >= (FRIC_MIN_SPEED+FIRC_MAX_SPEED)/2))
   {
     shoot->motor_pid.enable = 1;
   }
