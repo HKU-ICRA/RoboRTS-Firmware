@@ -17,6 +17,9 @@
 
 
 #include "referee_system.h"
+#include "communicate.h"
+#include "protocol.h"
+#include "infantry_cmd.h"
 
 static unpack_data_t referee_unpack_obj;
 static fifo_s_t  referee_rxdata_fifo;
@@ -78,6 +81,9 @@ void referee_data_handler(uint8_t *p_frame)
   uint16_t data_length = p_header->data_length;
   uint16_t cmd_id      = *(uint16_t *)(p_frame + REF_PROTOCOL_HEADER_SIZE);
   uint8_t *data_addr   = p_frame + REF_PROTOCOL_HEADER_SIZE + REF_PROTOCOL_CMD_SIZE;
+
+  /*Resend the information to manifold*/
+  protocol_send(MANIFOLD2_ADDRESS, cmd_id + 0x4000, data_addr, data_length);
 
 	if(ref_cmd_callback != NULL)
 	{
